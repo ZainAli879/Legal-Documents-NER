@@ -5,7 +5,7 @@ from pathlib import Path
 import io
 
 # Configure the API key
-genai.configure(api_key="AIzaSyCw4clnJTbbLuarPmDlZmDI7FZglK7bBAY")
+genai.configure(api_key = st.secrets["API_KEY"])
 
 # Model Configuration
 MODEL_CONFIG = {
