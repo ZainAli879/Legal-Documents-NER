@@ -52,7 +52,7 @@ def gemini_output(pdf_path):
         - Defendant's Name
         - Defendant's Address
         Dont add any extra data in any field only add what is required (imp)
-        Please analyze all pages of the document and provide the extracted information in a structured CSV format with correct headers also dont use , in Tax amount like if $6,385.56 write it as $6385.56. One more thing if there's multiple Defendants then write their data separately. Also in Defendant's Address if there's a , like 7 Clara Barton Ln Galveston,TX 77551 then replace it with 7 Clara Barton Ln Galveston;TX 77551. And don't use , in ACCT No values, write simply like 292600000002011155511 without commas in Raw csv data (imp)."""
+        Please analyze all pages of the document and provide the extracted information in a structured CSV format with correct headers also dont use , in Tax amount like if $6,385.56 write it as $6385.56. Also in Defendant's Address if there's a , like 7 Clara Barton Ln Galveston,TX 77551 then replace it with 7 Clara Barton Ln Galveston;TX 77551. And don't use , in ACCT No values, write simply like 292600000002011155511 without commas in Raw csv data (imp)."""
     )
     input_prompt = [system_prompt, pdf_info[0]]
     response = model.generate_content(input_prompt)
