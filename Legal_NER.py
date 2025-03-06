@@ -51,15 +51,17 @@ def gemini_output(pdf_path):
         - Tax Amount
         - Defendant's Name
         - Defendant's Address
-         if you get any value like this in any pdf 292600000002011 (155511) combine them as one value 292600000002011(155511)
-        Dont add any extra data in any field only add what is required (imp)
-        Please analyze all pages of the document and provide the extracted information in a structured CSV format with correct headers also dont use , in Tax amount like if $6,385.56 write it as $6385.56. Also in Defendant's Address if there's a , like 7 Clara Barton Ln Galveston,TX 77551 then replace it with 7 Clara Barton Ln Galveston;TX 77551. And don't use , in ACCT No values, write simply like 292600000002011155511 without commas in Raw csv data (imp)."""
-    )
+        if there are multiple ACCT No or Property Id then you have to extract the first one only
+        Dont provide multiple Defandants name and adresses only first Defandant and his/her address(imp)
+        There will be only one record and no date files,county or anyother value should not be repeated
+        In Property ID provide Property ID number not details of property
+        Please analyze all pages of the document and provide the extracted information in a structured CSV format with correct headers also dont use , in Tax amount provide total aggregate Tax amount of all properties and if total aggregate is $6,385.56 write it as $6385.56 without using commas(,). Also in Defendant's Address if there's a , like 7 Clara Barton Ln Galveston,TX 77551 then replace it with 7 Clara Barton Ln Galveston;TX 77551. And don't use , in ACCT No values, write simply like 292600000002011155511 without commas in Raw csv data (imp)."""
+         )
     input_prompt = [system_prompt, pdf_info[0]]
     response = model.generate_content(input_prompt)
     return response.text if response else ""
 
-# Apply custom CSS for improved UI
+# Apply custom CSS for dark & light mode compatibility
 st.markdown("""
     <style>
         html, body, [class*="stApp"]  {
@@ -75,27 +77,22 @@ st.markdown("""
             border: none;
             transition: background-color 0.3s ease;
         }
-        .sidebar .sidebar-content {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        @media (max-width: 600px) { /* Mobile */
-            h1 {
-                font-size: 20px;
+        @media (prefers-color-scheme: dark) {
+            h1, h2, h3, h4, h5, h6, p {
+                color: white;
             }
-            .sidebar .sidebar-content {
-                padding: 10px;
+            .stDownloadButton button {
+                background-color: #1f77b4;
+                color: white;
             }
         }
-        @media (max-width: 1024px) and (min-width: 601px) { /* Tablet */
-            h1 {
-                font-size: 24px;
+        @media (prefers-color-scheme: light) {
+            h1, h2, h3, h4, h5, h6, p {
+                color: black;
             }
-        }
-        @media (min-width: 1025px) { /* Laptop/PC */
-            h1 {
-                font-size: 30px;
+            .stDownloadButton button {
+                background-color: #0a74da;
+                color: white;
             }
         }
     </style>
@@ -104,14 +101,9 @@ st.markdown("""
 # Streamlit UI
 st.markdown("<h1>📜 Legal Document Information Extractor</h1>", unsafe_allow_html=True)
 
-# Sidebar for file upload with styling
-st.sidebar.markdown("""
-    <div class="sidebar-content">
-        <h2>📂 Upload PDF Files</h2>
-        <p>Drag and drop PDF files to extract legal information.</p>
-    </div>
-""", unsafe_allow_html=True)
-
+# Sidebar for file upload
+st.sidebar.header("Upload PDF Files")
+st.sidebar.markdown("Drag and drop PDF files to extract legal information.")
 uploaded_files = st.sidebar.file_uploader("Upload legal PDF documents", type=["pdf"], accept_multiple_files=True)
 
 if uploaded_files:
@@ -127,17 +119,23 @@ if uploaded_files:
 
         if extracted_csv.strip():
             try:
+                # Clean up CSV formatting issues
                 extracted_csv = extracted_csv.strip("`").replace("```csv", "").replace("```", "").strip()
                 if extracted_csv.lower().startswith("csv"):
                     extracted_csv = extracted_csv[3:].strip()
 
+                # Display raw extracted CSV data
                 with st.expander("📑 Raw Extracted CSV Data"):
                     st.text_area("", extracted_csv, height=200)
 
+                # Read CSV into a Pandas DataFrame
                 df = pd.read_csv(io.StringIO(extracted_csv), header=0, engine='python', on_bad_lines="skip")
+
+                # Display data in tabular format
                 st.subheader("📊 Extracted Data in Tabular Format")
                 st.dataframe(df, use_container_width=True)
 
+                # Convert DataFrame to CSV for download
                 csv_file = df.to_csv(index=False).encode("utf-8")
                 st.download_button(
                     label="📥 Download Data",
@@ -150,3 +148,4 @@ if uploaded_files:
                 st.error(f"⚠️ Error processing CSV: {e}")
         else:
             st.error(f"❌ No relevant data found in {uploaded_file.name}. Please try another file.")
+
