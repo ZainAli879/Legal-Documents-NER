@@ -5,7 +5,7 @@ from pathlib import Path
 import io
 
 # Configure the API key
-genai.configure(api_key = st.secrets["API_KEY"])
+genai.configure(api_key="AIzaSyCw4clnJTbbLuarPmDlZmDI7FZglK7bBAY")
 
 # Model Configuration
 MODEL_CONFIG = {
@@ -44,18 +44,31 @@ def gemini_output(pdf_path):
         """You are a specialist in extracting information from legal documents.
         Input PDFs in the form of legal documents will be provided to you,
         and your task is to extract and respond with the following information:
-        - Date Filed
+        - Case No
         - County
-        - ACCT No
+        - Date Filed
+        - First Name
+        - Middle Name
+        - Last Name
+        - Street No
+        - Street Name
+        - City Name
+        - State Name
+        - Zip Code
+        - Deceased
+        - Account No
         - Property ID
         - Tax Amount
-        - Defendant's Name
-        - Defendant's Address
+        You have to Extract First Name , Middle Name , Last Name of First Defandant only not all and Street No, Street Name , City Name , State Name , Zip Code of the same Defandant(imp).
+        If the document states "if living" AND "if any or all of the above-named Defendant(s) be deceased",
+         → Extract "Deceased".
+        If there is no mention of death after the Defendant’s details,
+         → Leave the field empty.
         if there are multiple ACCT No or Property Id then you have to extract the first one only
         Dont provide multiple Defandants name and adresses only first Defandant and his/her address(imp)
         There will be only one record and no date files,county or anyother value should not be repeated
         In Property ID provide Property ID number not details of property
-        Please analyze all pages of the document and provide the extracted information in a structured CSV format with correct headers also dont use , in Tax amount provide total aggregate Tax amount of all properties and if total aggregate is $6,385.56 write it as $6385.56 without using commas(,). Also in Defendant's Address if there's a , like 7 Clara Barton Ln Galveston,TX 77551 then replace it with 7 Clara Barton Ln Galveston;TX 77551. And don't use , in ACCT No values, write simply like 292600000002011155511 without commas in Raw csv data (imp)."""
+        Please analyze all pages of the document and provide the extracted information in a structured CSV format with correct headers also dont use , in Tax amount provide total aggregate Tax amount or Total Due of all properties and for example if total aggregate or Total Due is $6,385.56 write it as $6385.56 without using commas(,). And don't use , in ACCT No values, write simply like 292600000002011155511 without commas in Raw csv data (imp)."""
          )
     input_prompt = [system_prompt, pdf_info[0]]
     response = model.generate_content(input_prompt)
@@ -148,4 +161,3 @@ if uploaded_files:
                 st.error(f"⚠️ Error processing CSV: {e}")
         else:
             st.error(f"❌ No relevant data found in {uploaded_file.name}. Please try another file.")
-
