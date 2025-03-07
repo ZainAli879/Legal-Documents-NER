@@ -62,7 +62,7 @@ def gemini_output(pdf_path):
         - Account No
         - Property ID
         - Tax Amount
-        You have to Extract First Name , Middle Name , Last Name of First Defandant only and Street No, Street Name , City Name , State Name , Zip Code of the first Defandant(imp).
+        You have to Extract First Name , Middle Name , Last Name of First Defandant only and Street No, Street Name , City Name , State Name , Zip Code of the same Defandant(imp).
         If the document have this line "if living" AND "if any or all of the above-named Defendant(s) be deceased" then Extract "Deceased" else leave the field empty.
         No extra formatting:  
           - Do not include triple backticks (` ``` `) or unnecessary text at the start and end of Extracted Rae Csv Data.  
