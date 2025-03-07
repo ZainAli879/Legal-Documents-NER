@@ -59,7 +59,8 @@ def gemini_output(pdf_path):
         - Account No
         - Property ID
         - Tax Amount
-        You have to Extract First Name , Middle Name , Last Name of First Defandant only not all and Street No, Street Name , City Name , State Name , Zip Code of the same Defandant(imp) . Dont use any other defandant's information like (Street No, Street Name , City Name , State Name , Zip Code) if these information are not given for first defandant and left these fields empty(imp).        If the document states "if living" AND "if any or all of the above-named Defendant(s) be deceased",
+        You have to Extract First Name , Middle Name , Last Name of First Defandant only not all and Street No, Street Name , City Name , State Name , Zip Code of the first Defandant(imp) only otherwise leave these location fields empty.
+        If the document states "if living" AND "if any or all of the above-named Defendant(s) be deceased",
          → Extract "Deceased".
         If there is no mention of death after the Defendant’s details,
          → Leave the field empty.
