@@ -62,8 +62,7 @@ def gemini_output(pdf_path):
         - Account No
         - Property ID
         - Tax Amount
-        **Only extract the First Defendant’s** details for Name, Address (Street No, Street Name, City, State, Zip Code). **Ignore other defendants.**  
-        Make sure all column fields have data according to thier column name(imp)
+        You have to Extract First Name , Middle Name , Last Name of First Defandant only not all Defandants and Street No, Street Name , City Name , State Name , Zip Code of the same Defandant(imp).
         If the document states "if living" AND "if any or all of the above-named Defendant(s) be deceased",
          → Extract "Deceased".
         If there is no mention of death after the Defendant’s details,
@@ -73,7 +72,7 @@ def gemini_output(pdf_path):
         There will be only one record and no date files,county or anyother value should not be repeated
         In Property ID provide Property ID number not details of property
         Please analyze all pages of the document and provide the extracted information in a structured CSV format with correct headers also dont use , in Tax amount provide total aggregate Tax amount or Total Due of all properties and for example if total aggregate or Total Due is $6,385.56 write it as $6385.56 without using commas(,). And don't use , in ACCT No values, write simply like 292600000002011155511 without commas in Raw csv data (imp)."""
-         )
+         ) 
     input_prompt = [system_prompt, pdf_info[0]]
     response = model.generate_content(input_prompt)
     return response.text if response else ""
