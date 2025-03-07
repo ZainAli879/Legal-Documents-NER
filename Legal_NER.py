@@ -67,6 +67,7 @@ def gemini_output(pdf_path):
          → Extract "Deceased".
         If there is no mention of death after the Defendant’s details,
          → Leave the field empty.
+         Dont use any characters like ''' at the end and start of extracted data(imp)
         if there are multiple ACCT No or Property Id then you have to extract the first one only
         Dont provide multiple Defandants name and adresses only first Defandant and his/her address(imp)
         There will be only one record and no date files,county or anyother value should not be repeated
