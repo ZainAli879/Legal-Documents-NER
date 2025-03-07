@@ -63,6 +63,7 @@ def gemini_output(pdf_path):
         - Property ID
         - Tax Amount
         **Only extract the First Defendant’s** details for Name, Address (Street No, Street Name, City, State, Zip Code). **Ignore other defendants.**  
+        Make sure all column fields have data according to thier column name(imp)
         If the document states "if living" AND "if any or all of the above-named Defendant(s) be deceased",
          → Extract "Deceased".
         If there is no mention of death after the Defendant’s details,
