@@ -4,8 +4,11 @@ import google.generativeai as genai
 from pathlib import Path
 import io
 
-# Configure the API key
-genai.configure(api_key={"API_KEY"})
+# Access the API key from Streamlit secrets
+api_key = st.secrets["API_KEY"]
+
+# Configure the API key for genai
+genai.configure(api_key=api_key)
 
 # Model Configuration
 MODEL_CONFIG = {
